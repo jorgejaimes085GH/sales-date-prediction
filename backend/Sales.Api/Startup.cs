@@ -19,6 +19,13 @@ namespace Sales.Api
         // REGISTRO DE SERVICIOS
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(
+                o => o.AddPolicy("AllowAll", b =>
+                b.AllowAnyOrigin()
+                 .AllowAnyHeader()
+                 .AllowAnyMethod()));
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -49,6 +56,7 @@ namespace Sales.Api
             
             app.UseRouting();
             app.UseAuthorization();
+            app.UseCors("AllowAll");
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

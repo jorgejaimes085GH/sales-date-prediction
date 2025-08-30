@@ -23,8 +23,8 @@ namespace Sales.Api.Data
         Task<IEnumerable<CategoryDto>> GetCategoriesAsync(string search = null);
 
         Task<IEnumerable<OrderDetailDto>> GetOrderDetailsAsync(int orderId);
-
-        Task<int> CreateOrderAsync(NewOrderDto order);
+ 
+        Task<int> CreateOrderAsync(NewOrderDto dto);
          
     }
 }
