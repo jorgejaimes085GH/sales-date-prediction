@@ -192,15 +192,21 @@ namespace Sales.Api.Data
 
         // -------------------- INSERTS (Orders y OrderDetails) --------------------
         private const string SqlInsertOrder = @"
-          INSERT INTO Sales.Orders (custid, empid, orderdate, shipperid, freight)
-          VALUES (@CustomerId, @EmployeeId, @OrderDate, @ShipperId, @Freight);
+          INSERT INTO Sales.Orders
+            (custid, empid, orderdate, requireddate, shippeddate, shipperid, freight,
+             shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+          SELECT
+            @CustomerId, @EmployeeId, @OrderDate, @RequiredDate, NULL, @ShipperId, @Freight,
+            c.companyname, c.address, c.city, c.region, c.postalcode, c.country
+          FROM Sales.Customers c
+          WHERE c.custid = @CustomerId;
+
           SELECT CAST(SCOPE_IDENTITY() AS int);";
 
         private const string SqlInsertOrderDetail = @"
           INSERT INTO Sales.OrderDetails (orderid, productid, unitprice, qty, discount)
           VALUES (@OrderId, @ProductId, @UnitPrice, @qty, @Discount);";
 
-        // --------- Sales.Orders (+ OrderDetails) : Create -----------------------------------------
         public async Task<int> CreateOrderAsync(NewOrderDto order)
         {
             using var db = Conn();
@@ -209,13 +215,15 @@ namespace Sales.Api.Data
 
             try
             {
+                var requiredDate = order.OrderDate.AddDays(7);
+
                 var orderId = await db.ExecuteScalarAsync<int>(
                     SqlInsertOrder,
-                    new
-                    {
+                    new {
                         order.CustomerId,
                         order.EmployeeId,
-                        OrderDate = order.OrderDate,
+                        OrderDate    = order.OrderDate,
+                        RequiredDate = requiredDate,
                         order.ShipperId,
                         order.Freight
                     },
@@ -226,12 +234,11 @@ namespace Sales.Api.Data
                 {
                     await db.ExecuteAsync(
                         SqlInsertOrderDetail,
-                        new
-                        {
+                        new {
                             OrderId = orderId,
                             d.ProductId,
                             d.UnitPrice,
-                            qty = d.qty,     // <- mapeamos @qty al nombre del DTO
+                            qty = d.qty, 
                             d.Discount
                         },
                         tx
