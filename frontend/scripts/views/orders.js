@@ -1,34 +1,59 @@
 APISales.Views = APISales.Views || {};
 
-APISales.Views.Orders = function(root){
-  APISales.BaseScreen.call(this, root);
+APISales.Views.Orders = function (root, payload) {
+  APISales.Views.Base.call(this, root);
+  this.payload = payload || {};
 };
 
-APISales.Views.Orders.prototype = Object.create(APISales.BaseScreen.prototype);
+
+APISales.Views.Orders.prototype = Object.create(APISales.Views.Base.prototype);
 APISales.Views.Orders.prototype.constructor = APISales.Views.Orders;
 
-APISales.Views.Orders.prototype.mount = function(){
+APISales.Views.Orders.prototype.mount = async function () {
   const root = this.root;
-  root.innerHTML = APISales.Views.OrdersUI.layout();
 
-  const btn   = root.querySelector('#ord-go');
-  const input = root.querySelector('#ord-customer');
+  // Render UI
+  root.innerHTML = APISales.Views.OrdersUI.layout(this.payload);
 
-  btn.onclick = async () => {
-    const id = parseInt(input.value, 10);
-    if (!id) { alert('Ingrese Customer ID'); return; }
+  // refs
+  this.$input = root.querySelector("#ord-customer");
+  this.$btn   = root.querySelector("#ord-go");
+  this.$table = root.querySelector("#ord-table");
+  this.$det   = root.querySelector("#ord-details");
 
-    const items    = await APISales.API.get(`/Orders/by-customer/${id}`);
-    const tableDiv = root.querySelector('#ord-table');
-    tableDiv.innerHTML = APISales.Views.OrdersUI.table(items);
+  // --- si viene con payload desde Predictions ---
+  if (this.payload && this.payload.customerId) {
+    this.$input.value = this.payload.customerId;
 
-    tableDiv.querySelectorAll('.show-details').forEach(b => {
-      b.onclick = async () => {
-        const orderId   = b.getAttribute('data-order');
-        const details   = await APISales.API.get(`/Orders/${orderId}/details`);
-        const detailsDiv= root.querySelector('#ord-details');
-        detailsDiv.innerHTML = APISales.Views.OrdersUI.details(details);
-      };
-    });
+    // simular click en "Load orders"
+    setTimeout(async () => {
+      this.$det.innerHTML = "";
+      await this.loadOrders(this.payload.customerId);
+    }, 0);
+  }
+
+  // --- click en "Load orders" ---
+  this.$btn.onclick = async () => {
+    this.$det.innerHTML = "";
+    const id = Number(this.$input.value);
+    if (!id) { 
+      alert("Ingrese Customer ID"); 
+      return; 
+    }
+    await this.loadOrders(id);
   };
+};
+
+APISales.Views.Orders.prototype.loadOrders = async function (custId) {
+  const rows = await APISales.API.get(`/Orders/by-customer/${custId}`);
+  this.$table.innerHTML = APISales.Views.OrdersUI.table(rows);
+
+  // botones "Details"
+  this.$table.querySelectorAll(".show-details").forEach(btn => {
+    btn.onclick = async () => {
+      const orderId = btn.dataset.order;
+      const det = await APISales.API.get(`/Orders/${orderId}/details`);
+      this.$det.innerHTML = APISales.Views.OrdersUI.details(det);
+    };
+  });
 };

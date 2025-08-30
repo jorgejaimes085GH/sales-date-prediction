@@ -1,59 +1,55 @@
+(function (NS) {
+  // Namespace principal
+  NS.Views = NS.Views || {};
 
-(function (global) {
-  // ---- Namespace raíz ----
-  // Si ya existe, lo reusa (no pisa nada).
-  const NS = global.APISales = global.APISales || Object.create(null);
-
-  // Sub-namespaces (si no existen, se crean)
-  NS.Views = NS.Views || Object.create(null);
-  NS.Components = NS.Components || Object.create(null);
-  NS.Utils = NS.Utils || Object.create(null);
-
-  // ------------------------------------------------------------------
-  // Clase base para todas las pantallas: APISales.BaseScreen  (antes "View")
-  // ------------------------------------------------------------------
-  function BaseScreen(rootEl) {
-    this.root = rootEl || document.getElementById('app');
-    if (!this.root) {
-      throw new Error('[APISales] No se encontró el contenedor #app');
-    }
+  // ------ Clase base para todas las vistas ------
+  function Base(root, payload) {
+    this.root = root || document.getElementById('app');
+    this.payload = payload || {}; // cada vista puede recibir datos (ej: customerId)
   }
-  BaseScreen.prototype.mount = function () { /* opcional */ };
-  BaseScreen.prototype.unmount = function () {
+  Base.prototype.mount = function () {};
+  Base.prototype.unmount = function () {
     if (this.root) this.root.innerHTML = '';
   };
 
-  NS.BaseScreen = BaseScreen;
+  // Disponible como APISales.Views.Base
+  NS.Views.Base = Base;
 
-  // ------------------------------------------------------------------
-  // Pequeño orquestador de pantallas: APISales.App
-  // ------------------------------------------------------------------
-  function App(rootEl) {
-    this.root = rootEl || document.getElementById('app');
+  // ------ Gestor de vistas ------
+  function App(root) {
+    this.root = root || document.getElementById('app');
     this.current = null;
   }
 
-  function resolveCtor(name) {
-    if (!name) return null;
-    // Permite 'predictions' o 'Predictions'
-    return NS.Views[name] || NS.Views[name[0].toUpperCase() + name.slice(1)];
-  }
+  /**
+   * Cambia a una vista
+   * @param {string} key - Nombre lógico de la vista ('predictions','orders','neworder')
+   * @param {object} payload - Datos opcionales que se pasan a la vista
+   */
+  App.prototype.show = function (key, payload) {
+    // desmontar vista actual
+    if (this.current && this.current.unmount) this.current.unmount();
 
-  App.prototype.show = function (name) {
-    const Ctor = resolveCtor(name);
+    // mapping de keys a constructores
+    var map = { predictions: 'Predictions', orders: 'Orders', neworder: 'NewOrder' };
+    var Ctor = NS.Views[map[key]];
+
     if (!Ctor) {
-      throw new Error(`[APISales] View '${name}' no encontrada. Asegúrate de cargar su .js`);
+      console.error("No existe la vista:", key);
+      return;
     }
-    if (this.current && typeof this.current.unmount === 'function') {
-      this.current.unmount();
+
+    // instanciar y montar
+    this.current = new Ctor(this.root, payload);
+    if (this.current.mount) this.current.mount();
+
+    if (typeof window.setActive === "function") {
+      window.setActive(key);
     }
-    this.current = new Ctor(this.root);
-    if (this.current && typeof this.current.mount === 'function') {
-      this.current.mount();
-    }
-    return this.current;
+    
   };
 
+  // Disponible como APISales.App
   NS.App = App;
 
-})(window);
+})(window.APISales = window.APISales || {});

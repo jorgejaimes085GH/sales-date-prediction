@@ -2,32 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>Sales App</title>
+  <title>Sales Date Prediction App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
   <header class="topbar">
-    <h1>Sales App</h1>
-    <nav class="tabs">
-      <button data-view="predictions" class="tab active">Sales Date Prediction</button>
-      <button data-view="orders" class="tab">Orders</button>
-      <button data-view="neworder" class="tab">New Order</button>
-    </nav>
+    <div class="brand">Sales Date Prediction App</div>
+    <div class="right"> 
+      <img class="logo" src="img/NSerio-BlackN-Transparent---XS.png" alt="NSERIO" onerror="this.replaceWith(document.createTextNode('NSERIO'))"/>
+    </div>
   </header>
+
+  <nav class="tabs">
+    <button data-view="predictions" class="tab active">Sales Date Prediction</button>
+    <button data-view="orders" class="tab">Orders</button>
+    <button data-view="neworder" class="tab">New Order</button>
+  <nav>
 
   <main id="app" class="container"><!-- aquí se inyectan las views --></main>
  
-  <script defer src="scripts/core/ns.js" defer></script> <!-- namespaces  -->
-  <script defer src="scripts/core/api.js" defer></script> 
-
-  <script defer src="scripts/views/predictions.ui.js"></script>
-  <script defer src="scripts/views/predictions.js"></script>
-  <script defer src="scripts/views/orders.ui.js"></script>
-  <script defer src="scripts/views/orders.js"></script>
-  <script defer src="scripts/views/newOrder.ui.js"></script>
-  <script defer src="scripts/views/newOrder.js"></script>
-  
-  <script defer src="scripts/main.js"></script>
+     <!-- core -->
+    <script src="scripts/core/ns.js"></script>
+    <script src="scripts/core/api.js"></script>
+      
+    <!-- Vistas (constructores y lógica) -->
+    <script src="scripts/views/predictions.js"></script>
+    <script src="scripts/views/orders.js"></script>
+    <script src="scripts/views/newOrder.js"></script>
+      
+    <!-- UIs (definen .UI para cada vista) -->
+    <script src="scripts/views/predictions.ui.js"></script>
+    <script src="scripts/views/orders.ui.js"></script>
+    <script src="scripts/views/newOrder.ui.js"></script>
+      
+    <!-- arranque -->
+    <script src="scripts/main.js"></script>
 </body>
 </html>

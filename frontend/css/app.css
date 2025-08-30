@@ -1,9 +1,52 @@
+/* ========= Variables de marca ========= */
 :root{
-  --primary:#2e7d32;          /* verde header */
+  --brand:#111111;          /* negro barra superior */
+  --accent:#c62828;         /* rojo corporativo */
+  --success:#2e7d32;        /* verde para "NEW ORDER" */
   --divider:#e5e7eb;
   --muted:#6b7280;
 }
 
+/* ========= Topbar + tabs ========= */
+.topbar{
+  background:var(--brand);
+  color:#fff;
+  padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.topbar .brand{ font-weight:700; }
+.topbar .right{ display:flex; align-items:center; gap:12px; }
+.topbar img.logo{ height:24px; }
+
+.tabs {
+  
+  align-items: center;
+  gap: 10px;
+  padding: 0.5rem 1rem;
+  background: #222;         /* negro corporativo */
+  border-bottom: 2px solid #900; /* rojo corporativo */
+}
+.tabs .tab {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;   /* texto blanco */
+  border-radius: 4px 4px 0 0;
+  transition: all 0.2s ease;
+}
+.tabs .tab:hover {
+  background: #444;  /* hover gris oscuro */
+}
+
+.tabs .tab.active {
+  background: #900;   /* rojo corporativo */
+  color: #fff;
+}
+
+/* ========= Panel (tarjeta) ========= */
 .panel{
   background:#fff;
   border:1px solid var(--divider);
@@ -12,97 +55,67 @@
   overflow:hidden;
 }
 .panel-header{
-  background:var(--primary);
-  color:#fff;
-  padding:14px 16px;
-  font-weight:600;
+  /* El mock del New Order usa barra verde */
+  background:var(--success);
+  color:#fff; padding:14px 16px; font-weight:600;
 }
 .panel-footer{
-  display:flex;
-  justify-content:flex-end;
-  gap:12px;
-  padding:12px 16px;
-  border-top:1px solid var(--divider);
+  display:flex; justify-content:flex-end; gap:12px;
+  padding:12px 16px; border-top:1px solid var(--divider);
 }
-
-.section{
-  padding:16px;
-  border-bottom:1px solid var(--divider);
-}
+.section{ padding:16px; border-bottom:1px solid var(--divider); }
 .section:last-of-type{ border-bottom:0; }
-
-.section-title{
-  font-weight:600;
-  color:#374151;
-  margin:4px 0 12px;
+.section-title{ font-weight:600; color:#374151; margin:4px 0 12px; }
+ 
+.card {
+    background-color: white;    
+    padding: 16px;  
+    border-bottom: 1px solid var(--divider);  
 }
 
-/* grid responsive (3 cols -> 2 -> 1) */
+/* ========= Form grid ========= */
 .form-grid{
-  display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap:16px;
+  display:grid; gap:16px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
 }
-@media (max-width: 980px){ .form-grid{ grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 640px){ .form-grid{ grid-template-columns: 1fr; } }
-
+@media (max-width:980px){ .form-grid{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width:640px){ .form-grid{ grid-template-columns: 1fr; } }
 .field{ display:flex; flex-direction:column; gap:6px; }
-.field.grow{ grid-column: 1 / -1; }      /* fila completa */
+.field.grow{ grid-column:1 / -1; }
 .field.align-end{ align-self:end; }
 
-.field label{
-  font-size:.85rem;
-  color:var(--muted);
-}
-
-/* input “underlined” */
-.field input,
-.field select{
-  appearance:none;
-  background:transparent;
-  border:none;
+.field label{ font-size:.85rem; color:var(--muted); }
+.field input, .field select{
+  appearance:none; background:transparent; border:none;
   border-bottom:2px solid var(--divider);
-  padding:8px 6px 6px;
-  outline:none;
+  padding:8px 6px 6px; outline:none;
 }
-.field input:focus,
-.field select:focus{
-  border-bottom-color:var(--primary);
-}
+.field input:focus, .field select:focus{ border-bottom-color:var(--success); }
 
 /* prefijo $ para Freight */
-.input-prefix-wrap{
-  position:relative;
-}
-.input-prefix-wrap .prefix{
-  position:absolute; left:8px; top:10px; color:var(--muted);
-}
-.input-prefix-wrap input{
-  padding-left:20px;
+.input-prefix-wrap{ position:relative; }
+.input-prefix-wrap .prefix{ position:absolute; left:8px; top:10px; color:var(--muted); }
+.input-prefix-wrap input{ padding-left:20px; }
+
+/* ========= Tabla ========= */
+table{ 
+  width:100%; border-collapse:collapse; 
+  background-color: #eee;
 }
 
-/* tabla de ítems */
-.items-table{
-  width:100%; border-collapse:collapse; margin-top:8px;
-}
-.items-table th, .items-table td{
-  padding:8px; border-bottom:1px solid #eee; text-align:left;
-}
-.items-table th{ background:#fafafa; }
+thead th{ text-align:left; font-weight:600; color:#374151; background:#fafafa; }
+th,td{ padding:10px 12px; border-bottom:1px solid #eee; }
 
-/* botones */
+/* ========= Botones ========= */
 .btn{ padding:8px 12px; border-radius:8px; cursor:pointer; border:1px solid var(--divider); background:#fff; }
-.btn.primary{ background:var(--primary); color:#fff; border-color:var(--primary); }
-.btn.text{ border:none; background:transparent; color:var(--muted); }
+.btn.primary{ background:var(--success); color:#fff; border-color:var(--success); }
 .btn.outline{ background:#fff; }
+.btn.text{ border:none; background:transparent; color:var(--muted); }
 
-/* ayuda / errores */
-.hint{ 
-    color:var(--muted); 
-    font-size:.9rem; margin-top:6px; 
-}
+/* Links de acción estilo mock */
+.link-red{ color:var(--accent); font-weight:600; cursor:pointer; background:transparent; border:none; }
+.link-green{ color:var(--success); font-weight:600; cursor:pointer; background:transparent; border:none; }
+.link-red:hover, .link-green:hover{ text-decoration:underline; }
 
-.error{ 
-    color:#b91c1c; 
-    font-size:.9rem; 
-}
+.hint{ color:var(--muted); font-size:.9rem; margin-top:6px; }
+.error{ color:#b91c1c; font-size:.9rem; }
