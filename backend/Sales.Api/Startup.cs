@@ -32,6 +32,8 @@ namespace Sales.Api
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<ISupplierService, SupplierService>();
             services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IShipperService, ShipperService>();
+            services.AddTransient<ICategoryService, CategoryService>();
         }
 
         // PIPELINE HTTP

@@ -17,6 +17,14 @@ namespace Sales.Api.Data
         Task<IEnumerable<ProductDto>> GetProductsAsync(string search = null);
         
         Task<IEnumerable<SupplierDto>> GetSuppliersAsync(string search = null);
+
+        Task<IEnumerable<ShipperDto>> GetShippersAsync(string search = null);
+
+        Task<IEnumerable<CategoryDto>> GetCategoriesAsync(string search = null);
+
+        Task<IEnumerable<OrderDetailDto>> GetOrderDetailsAsync(int orderId);
+
+        Task<int> CreateOrderAsync(NewOrderDto order);
          
     }
 }
