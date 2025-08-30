@@ -112,7 +112,6 @@ namespace Sales.Api.Data
             using var db = Conn();
             return await db.QueryAsync<OrderDto>(sql, new { customerId });
         }
-        
-        
+         
     }
 }
