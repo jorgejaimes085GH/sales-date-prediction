@@ -15,7 +15,7 @@ namespace Sales.Api
         public Startup(IConfiguration configuration) => Configuration = configuration;
         public IConfiguration Configuration { get; }
 
-         
+
         // REGISTRO DE SERVICIOS
         public void ConfigureServices(IServiceCollection services)
         {
@@ -29,6 +29,9 @@ namespace Sales.Api
             services.AddTransient<IStoreRepository, StoreRepository>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ISupplierService, SupplierService>();
+            services.AddTransient<IOrderService, OrderService>();
         }
 
         // PIPELINE HTTP

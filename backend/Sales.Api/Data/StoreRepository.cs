@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Dapper;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Sales.Api;             
+using Sales.Api;
+using Sales.Api.Models;
 
 namespace Sales.Api.Data
 {
@@ -21,7 +22,7 @@ namespace Sales.Api.Data
 
         private IDbConnection Conn() => new SqlConnection(_cs);
 
-        // --------- Employees ----------
+        // --------- HR.Employees ------------------------------------------------------------------------------------------
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync()
         {
             const string sql = @"
@@ -34,7 +35,7 @@ namespace Sales.Api.Data
             return await db.QueryAsync<EmployeeDto>(sql);
         }
 
-        // --------- Customer Predictions  ----------
+        // --------- Sales.Customer / Predictions  ------------------------------------------------------------------------------------------
         public async Task<(IEnumerable<CustomerPredictionDto> Items, int Total)>
             GetCustomerPredictionsAsync(string search, int page, int pageSize, string sort, bool desc)
         {
@@ -97,7 +98,7 @@ namespace Sales.Api.Data
             return (items, total);
         }
 
-        // --------- Customer Order  ----------
+        // --------- Sales.Customer / Order  ------------------------------------------------------------------------------------------
         public async Task<IEnumerable<OrderDto>> GetCustomerOrdersAsync(int customerId)
         {
             const string sql = @"
@@ -112,6 +113,40 @@ namespace Sales.Api.Data
             using var db = Conn();
             return await db.QueryAsync<OrderDto>(sql, new { customerId });
         }
+
+        // --------- Production.product  ------------------------------------------------------------------------------------------
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync(string search = null)
+        {
+            var sql = @"
+                SELECT 
+                    p.productid    AS ProductId,
+                    p.productname  AS ProductName,
+                    p.unitprice    AS UnitPrice,
+                    p.discontinued AS Discontinued
+                FROM Production.Products p
+                WHERE (@search IS NULL OR p.productname LIKE '%'+@search+'%')
+                ORDER BY p.productname;";
+
+            using var db = Conn();
+            return await db.QueryAsync<ProductDto>(sql, new { search });
+        }
          
+        // --------- Production.Suppliers  ------------------------------------------------------------------------------------------
+        public async Task<IEnumerable<SupplierDto>> GetSuppliersAsync(string search = null)
+        {
+            var sql = @"
+                SELECT 
+                    supplierid   AS SupplierId,
+                    companyname  AS CompanyName,
+                    contactname  AS ContactName,
+                    phone        AS Phone
+                FROM Production.Suppliers
+                WHERE (@search IS NULL OR companyname LIKE '%'+@search+'%')
+                ORDER BY companyname;";
+
+            using var db = Conn();
+            return await db.QueryAsync<SupplierDto>(sql, new { search });
+        }
+ 
     }
 }
