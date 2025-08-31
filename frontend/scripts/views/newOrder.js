@@ -27,6 +27,7 @@ APISales.Views.NewOrder.prototype.mount = async function() {
   const $emp = root.querySelector('#no-emp');
   const $shipper = root.querySelector('#no-shipper');
   const $product = root.querySelector('#no-product');
+  const $customer = root.querySelector('#no-customer');
   const $unitPrice = root.querySelector('#no-unitPrice');
   const $discount = root.querySelector('#no-discount');
  
@@ -34,7 +35,8 @@ APISales.Views.NewOrder.prototype.mount = async function() {
   await APISales.Utils.loadEmployees($emp);
   await APISales.Utils.loadShippers($shipper);
   await APISales.Utils.loadProducts($product);
- 
+  await APISales.Utils.loadCustomers($customer);
+
   // Prefil de fechas
   const $ = sel => this.root.querySelector(sel);
   const today = new Date().toISOString().slice(0, 10);  // YYYY-MM-DD
@@ -43,8 +45,11 @@ APISales.Views.NewOrder.prototype.mount = async function() {
   if (orderDateEl) orderDateEl.value = today;
   if (requiredDateEl) requiredDateEl.value = today;
 
-  //campos llenados desde predictions
-  if (this.state.custName) $('#no-shipname').value = this.state.custName;
+  //campos llegados desde predictions
+  if (this.state.custId > 0)  {
+     const $cust = root.querySelector('#no-customer');
+     $cust.value = this.state.custId; 
+  }
   
   // -- Llenado de otros campos al seleccionar producto
   $product.onchange = () => {
@@ -85,14 +90,15 @@ APISales.Views.NewOrder.prototype.renderItems = function () {
 
 APISales.Views.NewOrder.prototype.close = async function () {
   const r = this.root;
-  
+   App.show('predictions');
+   setActive('predictions');
 };
 
 APISales.Views.NewOrder.prototype.save = async function () {
   const r = this.root;
   
   const dto = {
-    CustomerId: this.customerId,
+    CustomerId: parseInt(r.querySelector('#no-customer').value, 10),   
     EmployeeId: parseInt(r.querySelector('#no-emp').value, 10),   
     OrderDate: r.querySelector('#no-orderdate').value || new Date().toISOString(),
     Requireddate: r.querySelector('#no-orderdate').value || new Date().toISOString(),

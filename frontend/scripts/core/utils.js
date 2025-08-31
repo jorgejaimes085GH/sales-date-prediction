@@ -50,7 +50,7 @@ APISales.Utils.loadProducts = async function(selectEl) {
         ? (p.discontinued ? "T" : "F")
         : "F";
         
-      return `<option value="${p.productId}">${p.productName}    |    $${price}    |    dct.${dscto}</option>`;      
+      return `<option value="${p.productId}">${p.productName}  | $${price} | dct.${dscto}</option>`;      
     }).join('');
   } catch (err) {
     console.error("Error cargando productos:", err);
@@ -64,12 +64,14 @@ APISales.Utils.loadCustomers = async function(selectEl) {
     const data = await APISales.API.get('/Customers');
     console.log("Customers API:", data);
 
-    selectEl.innerHTML = data.map(e => {
-      const name = e.fullName || "N/A";
-      return `<option value="${e.empId}">${name}</option>`;
+    selectEl.innerHTML = data.map(c => {
+      const company = c.companyname || "N/A";
+      const contact = c.contactname || "";
+      return `<option value="${c.custid}">${company} (${contact})</option>`;
     }).join('');
   } catch (err) {
-    console.error("Error cargando empleados:", err);
-    selectEl.innerHTML = `<option value="">Error loading employees</option>`;
+    console.error("Error cargando customers:", err);
+    selectEl.innerHTML = `<option value="">Error loading customers</option>`;
   }
 };
+ 
