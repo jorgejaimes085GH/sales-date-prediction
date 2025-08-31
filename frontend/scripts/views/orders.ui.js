@@ -7,9 +7,9 @@ APISales.Views.OrdersUI = {
       <section class="card">
         <div class="row">
           <input id="ord-customer" type="number" min="1" placeholder="Customer ID" />
-          <button id="ord-go" class="primary">Load orders</button>
+          <button id="ord-go" class="btn">Load orders</button>
         </div>
-        <div class="help">GET /api/Orders/by-customer/{customerId}</div>
+         
       </section>
       <section class="cardtable">
         <div id="ord-table"></div>

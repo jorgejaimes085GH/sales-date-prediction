@@ -91,7 +91,7 @@ APISales.Views.NewOrderUI = {
       </div>
 
       <div class="panel-footer">
-        <button id="btn-close" class="btn text">Close</button>
+        <button id="btn-close" class="btn">Close</button>
         <button id="btn-save" class="btn primary">Save</button>
       </div>
     </section>`;
