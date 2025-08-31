@@ -119,3 +119,9 @@ th,td{ padding:10px 12px; border-bottom:1px solid #eee; }
 
 .hint{ color:var(--muted); font-size:.9rem; margin-top:6px; }
 .error{ color:#b91c1c; font-size:.9rem; }
+
+/*NewOrder SELECT PRODUCTOS*/
+#no-product {
+  font-family: monospace;   /* muy útil para columnas alineadas */
+  white-space: pre;         /* respeta los espacios */
+}

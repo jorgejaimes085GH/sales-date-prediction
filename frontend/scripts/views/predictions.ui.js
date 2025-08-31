@@ -15,7 +15,7 @@ APISales.Views.PredictionsUI = {
             <option value="true">Desc</option>
           </select>
           <button id="pred-go" class="btn">Search</button>
-          <div class="hint">GET /api/Customers/predictions</div>
+          <div class="hint">GET /api/predictions</div>
         </div>
         <div class="section">
           <table>

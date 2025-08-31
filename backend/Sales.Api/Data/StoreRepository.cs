@@ -154,6 +154,55 @@ namespace Sales.Api.Data
             return await db.QueryAsync<ShipperDto>(SqlGetShippers, new { search });
         }
 
+        // -------------------- Sales.Customers --------------------
+        private const string SqlGetCustomers = @"
+            SELECT 
+                custid       AS CustId,
+                companyname  AS CompanyName,
+                contactname  AS ContactName,
+                contacttitle AS ContactTitle,
+                address      AS Address,
+                city         AS City,
+                region       AS Region,
+                postalcode   AS PostalCode,
+                country      AS Country,
+                phone        AS Phone,
+                fax          AS Fax
+            FROM Sales.Customers
+            WHERE (@search IS NULL 
+                   OR companyname LIKE '%' + @search + '%' 
+                   OR contactname LIKE '%' + @search + '%')
+            ORDER BY companyname;";
+
+        public async Task<IEnumerable<CustomerDto>> GetCustomersAsync(string search = null)
+        {
+            using var db = Conn();
+            return await db.QueryAsync<CustomerDto>(SqlGetCustomers, new { search });
+        }
+
+        private const string SqlGetCustomerById = @"
+            SELECT 
+                custid       AS CustId,
+                companyname  AS CompanyName,
+                contactname  AS ContactName,
+                contacttitle AS ContactTitle,
+                address      AS Address,
+                city         AS City,
+                region       AS Region,
+                postalcode   AS PostalCode,
+                country      AS Country,
+                phone        AS Phone,
+                fax          AS Fax
+            FROM Sales.Customers
+            WHERE custid = @custid;";
+
+        public async Task<CustomerDto> GetCustomerByIdAsync(int custid)
+        {
+            using var db = Conn();
+            return await db.QueryFirstOrDefaultAsync<CustomerDto>(SqlGetCustomerById, new { custid });
+        }
+        
+
         // -------------------- Production.Categories --------------------
         private const string SqlGetCategories = @"
             SELECT categoryid AS CategoryId,

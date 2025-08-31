@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sales.Api; 
+using Sales.Api.Models;
 
 namespace Sales.Api.Services
 {
     public interface ICustomerService
     {
-        Task<(IEnumerable<CustomerPredictionDto> Items, int Total)>
-            GetPredictionsAsync(string search, int page, int pageSize, string sort, bool desc);
+        Task<IEnumerable<CustomerDto>> GetAllAsync(string search = null);
+        Task<CustomerDto> GetByIdAsync(int custid);
     }
 }

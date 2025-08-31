@@ -25,6 +25,8 @@ namespace Sales.Api.Data
         Task<IEnumerable<OrderDetailDto>> GetOrderDetailsAsync(int orderId);
  
         Task<int> CreateOrderAsync(NewOrderDto dto);
-         
+
+        Task<IEnumerable<CustomerDto>> GetCustomersAsync(string search = null);
+        Task<CustomerDto> GetCustomerByIdAsync(int custid); 
     }
 }

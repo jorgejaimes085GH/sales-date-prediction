@@ -42,7 +42,7 @@ APISales.Views.Predictions.prototype.load = async function(){
     sort: s.sort,
     desc: String(s.desc)
   });
-  const data  = await APISales.API.get(`/Customers/predictions?${q.toString()}`);
+  const data  = await APISales.API.get(`/predictions?${q.toString()}`);
   const items = data.items ?? data.Items ?? data;
   this.state.total = data.total ?? data.Total ?? items.length;
 
@@ -76,8 +76,8 @@ this.$table.querySelectorAll(".act-orders").forEach(btn=>{
   this.$table.querySelectorAll(".act-new").forEach(btn=>{
     btn.onclick = () => {
       const payload = { customerId:Number(btn.dataset.id), customerName:btn.dataset.name };
-      App.show('neworder', payload);
-      setActive(document.querySelector('[data-view="neworder"]'));
+      App.show('NewOrder', payload);
+      setActive(document.querySelector('[data-view="NewOrder"]'));
     };
   });
 };

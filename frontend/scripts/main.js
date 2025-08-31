@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const views = {
     predictions: () => App.show('predictions'),
     orders:      () => App.show('orders'),
-    neworder:    () => App.show('neworder'),
+    NewOrder:    () => App.show('NewOrder'),
   };
 
   document.querySelectorAll('[data-view]').forEach(btn => {

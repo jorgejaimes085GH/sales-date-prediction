@@ -7,6 +7,7 @@
     this.root = root || document.getElementById('app');
     this.payload = payload || {}; // cada vista puede recibir datos (ej: customerId)
   }
+
   Base.prototype.mount = function () {};
   Base.prototype.unmount = function () {
     if (this.root) this.root.innerHTML = '';
@@ -23,7 +24,7 @@
 
   /**
    * Cambia a una vista
-   * @param {string} key - Nombre lógico de la vista ('predictions','orders','neworder')
+   * @param {string} key - Nombre lógico de la vista ('predictions','orders','NewOrder')
    * @param {object} payload - Datos opcionales que se pasan a la vista
    */
   App.prototype.show = function (key, payload) {
@@ -31,7 +32,7 @@
     if (this.current && this.current.unmount) this.current.unmount();
 
     // mapping de keys a constructores
-    var map = { predictions: 'Predictions', orders: 'Orders', neworder: 'NewOrder' };
+    var map = { predictions: 'Predictions', orders: 'Orders', NewOrder: 'NewOrder' };
     var Ctor = NS.Views[map[key]];
 
     if (!Ctor) {
@@ -46,7 +47,7 @@
     if (typeof window.setActive === "function") {
       window.setActive(key);
     }
-    
+
   };
 
   // Disponible como APISales.App

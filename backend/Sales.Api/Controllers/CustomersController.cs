@@ -5,22 +5,34 @@ using Sales.Api.Services;
 namespace Sales.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]")]    
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _svc;
-        public CustomersController(ICustomerService svc) => _svc = svc;
 
-        [HttpGet("predictions")]
-        public async Task<IActionResult> GetPredictions(
-            [FromQuery] string search = null,
-            [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10,
-            [FromQuery] string sort = "CustomerName",
-            [FromQuery] bool desc = false)
+        public CustomersController(ICustomerService svc)
         {
-            var (items, total) = await _svc.GetPredictionsAsync(search, page, pageSize, sort, desc);
-            return Ok(new { items, total });
+            _svc = svc;
+        }
+
+        // GET /api/Customers?search=abc
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] string search = null)
+        {
+            var items = await _svc.GetAllAsync(search);
+            return Ok(items);
+        }
+
+        // GET /api/Customers/{custid}
+        [HttpGet("{custid:int}")]
+        public async Task<IActionResult> GetById(int custid)
+        {
+            if (custid <= 0) return BadRequest("custid inválido");
+
+            var item = await _svc.GetByIdAsync(custid);
+            if (item == null) return NotFound();
+
+            return Ok(item);
         }
     }
 }

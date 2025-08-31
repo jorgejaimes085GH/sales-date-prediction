@@ -13,7 +13,7 @@ APISales.Views.NewOrderUI = {
         <div class="form-grid">
           <div class="field">
             <label>Employee*</label>
-            <select id="no-employee"></select>
+            <select id="no-emp"></select>
           </div>
           <div class="field">
             <label>Shipper*</label>
@@ -70,7 +70,7 @@ APISales.Views.NewOrderUI = {
           </div>
           <div class="field">
             <label>Unit Price*</label>
-            <input id="no-unitprice" type="number" step="0.01" min="0"/>
+            <input id="no-unitPrice" type="number" step="0.01" min="0"/>
           </div>
           <div class="field">
             <label>Quantity*</label>
@@ -80,16 +80,14 @@ APISales.Views.NewOrderUI = {
             <label>Discount*</label>
             <input id="no-discount" type="number" step="0.01" min="0" value="0"/>
           </div>
-          
         </div>
-
-        <table class="items-table" id="no-items"></table>
+  
         <div class="hint">POST /api/Orders</div>
       </div>
 
       <div class="panel-footer">
-        <button id="no-close" class="btn text">Close</button>
-        <button id="no-save" class="btn primary">Save</button>
+        <button id="btn-close" class="btn text">Close</button>
+        <button id="btn-save" class="btn primary">Save</button>
       </div>
     </section>`;
   }
