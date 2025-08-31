@@ -15,7 +15,7 @@ namespace Sales.Api.Data
 
         public StoreRepository(IConfiguration cfg)
         {
-            _cs = @"Server=DESKTOP-RFS0G9N\SQLEXPRESS;Database=StoreSample;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true";
+            _cs = cfg.GetConnectionString("StoreSample");             
             System.Console.WriteLine("[ConnString] Hardcoded DEV in use");
         }
 

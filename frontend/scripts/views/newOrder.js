@@ -123,13 +123,69 @@ APISales.Views.NewOrder.prototype.save = async function () {
   };
 
   //validaciones  
-  if (!dto.CustomerId || !dto.EmployeeId || !dto.OrderDate ||  !dto.Requireddate || 
-      !dto.Shippeddate || !dto.ShipperId || !dto.Freight || 
-      !dto.Shipname || !dto.Shipaddress  || !dto.Shipcity || !dto.ShipCountry ||
-      !dto.Details[0].ProductId || !dto.Details[0].UnitPrice  || !dto.Details[0].Qty || !dto.Details[0].Discount) {
-    alert('Complete los campos obligatorios');
+  if (!dto.CustomerId) {
+    alert("El campo 'Customer' es obligatorio");
     return;
   }
+  if (!dto.EmployeeId) {
+    alert("El campo 'Employee' es obligatorio");
+    return;
+  }
+  if (!dto.OrderDate) {
+    alert("El campo 'Order Date' es obligatorio");
+    return;
+  }
+  if (!dto.Requireddate) {
+    alert("El campo 'Required Date' es obligatorio");
+    return;
+  }
+  if (!dto.Shippeddate) {
+    alert("El campo 'Shipped Date' es obligatorio");
+    return;
+  }
+  if (!dto.ShipperId) {
+    alert("El campo 'Shipper' es obligatorio");
+    return;
+  }
+  if (!dto.Shipname) {
+    alert("El campo 'Ship Name' es obligatorio");
+    return;
+  }
+  if (!dto.Shipaddress) {
+    alert("El campo 'Ship Address' es obligatorio");
+    return;
+  }
+  if (!dto.Shipcity) {
+    alert("El campo 'Ship City' es obligatorio");
+    return;
+  }
+  if (!dto.ShipCountry) {
+    alert("El campo 'Ship Country' es obligatorio");
+    return;
+  }
+
+
+
+// Detalles
+const det = dto.Details[0];
+if (!det.ProductId) {
+  alert("El campo 'Product' es obligatorio");
+  return;
+}
+if (!det.UnitPrice) {
+  alert("El campo 'Unit Price' es obligatorio");
+  return;
+}
+if (!det.Qty) {
+  alert("El campo 'Quantity' es obligatorio");
+  return;
+}
+// Discount puede ser 0, así que verificamos distinto
+if (det.Discount === null || det.Discount === undefined) {
+  alert("El campo 'Discount' es obligatorio");
+  return;
+}
+
   
   console.log("DTO enviado a API:", dto);
 
